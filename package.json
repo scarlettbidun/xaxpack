@@ -1,0 +1,16 @@
+{
+  "name": "xaxpack",
+  "version": "1.0.5",
+  "description": "some needed js shortcuts and functionalities for any kind of applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "techxax",
+    "xax",
+    "js"
+  ],
+  "author": "Scarlett Bidun",
+  "license": "ISC"
+}
