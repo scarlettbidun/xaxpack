@@ -15,10 +15,10 @@ export let aMixins = {
   },
   watch: {},
   methods: {
-    xaxPackInit () {
+    xaxPackInit: function () {
       console.log('thanks for using xaxpack@' + version)
     },
-    set (path, value) {
+    set: function (path, value) {
       //table.0.filter //tanımsızsa sayılar array|object tanımlanıyor, ilk key data'da tanımlı olmalı (store gibi)
       let
         paths = path.split('.'),
@@ -152,7 +152,7 @@ export let aMixins = {
         })
       })
     },
-    scrollToBot (el, scrollDuration = 1000) {
+    scrollToBot: function (el, scrollDuration = 1000) {
       const scrollHeight = el.scrollHeight - el.scrollTop - el.clientHeight,
         scrollStep = Math.PI / (scrollDuration / 15),
         cosParameter = scrollHeight / 2

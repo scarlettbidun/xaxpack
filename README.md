@@ -32,6 +32,25 @@ mounted () {
 }
 ```
 
+### aMixins
+ ```js
+xaxPackInit:            //initial
+set:                    //reactive set
+selfromdataf:           //vue selectbox
+objSearch:              //
+objFilter:              //
+// setState:            //vuex mutation
+con:                    //console.log
+isEmpty:                //
+// trans:               //
+urlSegment:             //
+delayed:                //delay
+// daterangepickerSet:  //
+// waitForSocket:       //
+post:                   //api post
+scrollToBot:            //scroll
+tc:                     //try catch
+```
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
