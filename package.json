@@ -11,6 +11,16 @@
     "xax",
     "js"
   ],
-  "author": "Scarlett Bidun",
-  "license": "ISC"
+  "homepage": "https://github.com/scarlettbidun/xaxpack",
+  "bugs": {
+    "url": "https://github.com/scarlettbidun/xaxpack/issues",
+    "email": "your-public-email@example.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scarlettbidun/xaxpack.git"
+  },
+  "author": "Scarlett Bidun <scarlettbidun@gmail.com> (https://github.com/scarlettbidun)",
+  "license": "MIT",
+  "private": false
 }
