@@ -59,7 +59,7 @@ export let aMixins = {
     //   this.$store.commit('setStateM', [path, value])
     //   return true
     // },
-    con: function (item) {console.log(item)},
+    con: function (...items) {console.log(...items)},
     isEmpty: function (item) {
       return !(item && Object.keys(item).length)
     },
