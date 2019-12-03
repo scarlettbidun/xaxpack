@@ -70,9 +70,9 @@ export let aMixins = {
     urlSegment: function ($i) {
       return location.href.split('/')[$i]
     },
-    delayed: function (callback, time = 1000) {
-      clearTimeout(this.typeTimer)
-      this.typeTimer = setTimeout(callback, time)
+    delayed: function (callback, time = 1000, name = 'default') {
+      clearTimeout(this.typeTimer[name])
+      this.typeTimer[name] = setTimeout(callback, time)
     },
     // daterangepickerSet: function () {
     //   $('#daterangepicker').daterangepicker({
