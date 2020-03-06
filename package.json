@@ -1,6 +1,6 @@
 {
   "name": "xaxpack",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "some needed js shortcuts and functionalities for any kind of applications",
   "main": "index.js",
   "scripts": {
