@@ -16,6 +16,8 @@ npm update xaxpack
 
 ```bash
 // git commit and push 
+npm run p
+//or
 npm version patch
 npm publish
 ```
@@ -40,7 +42,7 @@ mounted () {
 ```
 
 ### aMixins
- ```js
+ ```
 xaxPackInit:            //initial
 set:                    //reactive set
 selfromdataf:           //vue selectbox

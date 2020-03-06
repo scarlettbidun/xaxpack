@@ -1,8 +1,9 @@
 import { version } from './package.json'
+import LoadingToastr from './loadingToastr'
 
+export let loadingToastr = LoadingToastr
 export let printMsg = function () {
-  console.log('This is a message from the demo package')
-  console.log('this is an update')
+  console.log('This is a message from the xaxpack')
 }
 export let aMixins = {
   data () {
@@ -16,7 +17,7 @@ export let aMixins = {
   watch: {},
   methods: {
     xaxPackInit: function () {
-      console.log('thanks for using xaxpack@' + version)
+      // console.log('thanks for using xaxpack@' + version)
     },
     set: function (path, value) {
       //table.0.filter //tanımsızsa sayılar array|object tanımlanıyor, ilk key data'da tanımlı olmalı (store gibi)
@@ -142,9 +143,10 @@ export let aMixins = {
     // },
     //webapi
 
-    // $root.$refs.app.$refs.lt:<loading-toastr> invalidateInputs $root.postPath
+    // <loading-toastr> invalidateInputs $root.postPath
     post: function (path, a, b, c, d) {  //foreach object closure boolean string
-      if (this.$root.$refs.app) if (this.$root.$refs.app.$refs.lt) this.tc(() => this.$root.$refs.app.$refs.lt.show())
+      if (!this.store.posting || this.store.posting.indexOf(path) === -1) this.set('store.posting', [...(this.store.posting ? this.store.posting : []), path])
+      // if (this.$root.$refs.app) if (this.$root.$refs.app.$refs.lt) this.tc(() => this.$root.$refs.app.$refs.lt.show())
       let last_button = null
       if (event && event.target && event.target.nodeName == 'BUTTON') {
         last_button = event.target
@@ -159,7 +161,8 @@ export let aMixins = {
           else if (typeof item === 'boolean') notify = item
         })
         axios.post((this.$root.postPath ? ('/' + this.$root.postPath) : '') + '/' + path, obj).then(r => {
-          if (this.$root.$refs.app) if (this.$root.$refs.app.$refs.lt) this.$root.$refs.app.$refs.lt.hide()
+          if (this.store.posting && this.store.posting.indexOf(path) !== -1) this.set('store.posting', this.store.posting.filter(k => k !== path))
+          // if (this.$root.$refs.app) if (this.$root.$refs.app.$refs.lt) this.$root.$refs.app.$refs.lt.hide()
           if (r.status === 200)
             if (r.data.status) {
               func(r)
@@ -176,7 +179,8 @@ export let aMixins = {
           last_button && setTimeout(() => last_button.disabled = false, 1000)
           resolve(r)
         }).catch((r) => {
-          if (this.$root.$refs.app) if (this.$root.$refs.app.$refs.lt) this.tc(() => this.$root.$refs.app.$refs.lt.hide())
+          if (this.store.posting && this.store.posting.indexOf(path) !== -1) this.set('store.posting', this.store.posting.filter(k => k !== path))
+          // if (this.$root.$refs.app) if (this.$root.$refs.app.$refs.lt) this.tc(() => this.$root.$refs.app.$refs.lt.hide())
           if (notify)
             toastr.error(r.message || 'fail')
 
