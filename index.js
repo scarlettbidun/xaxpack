@@ -74,32 +74,65 @@ export let aMixins = {
       clearTimeout(this.typeTimer[name])
       this.typeTimer[name] = setTimeout(callback, time)
     },
-    // daterangepickerSet: function () {
-    //   $('#daterangepicker').daterangepicker({
-    //     //alwaysShowCalendars: true,
-    //     ranges: {
-    //       'Today': [moment(), moment()],
-    //       'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
-    //       'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
-    //       'Last 30 Days': [moment().subtract(29, 'days').startOf('day'), moment().endOf('day')],
-    //       'This Month': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
-    //       'Last Month': [moment().subtract(1, 'month').startOf('month').startOf('day'), moment().subtract(1, 'month').endOf('month').endOf('day')]
-    //     },
-    //     minDate: moment().subtract(2, 'years'),
-    //     callback: function (date1, date2, period) {
-    //       $(this).val(date1.format('L') + ' + ' + date2.format('L'))
-    //     },
-    //     linkedCalendars: false,
-    //     opens: 'center',
-    //     autoUpdateInput: false,
-    //   }, (date1, date2, label) => {
-    //     this.table.filter.date = date1.format('L') + ' – ' + date2.format('L')
-    //     this.table.filter.date1 = date1.format('YYYY-MM-DD')
-    //     this.table.filter.date2 = date2.format('YYYY-MM-DD')
-    //   })
-    //     .attr('size', 23)
-    //   // this.$refs.table.$watch('localItems',function(val){}, { deep: true })
-    // },
+    daterangepickerGlobal: function (params = {}) {
+      //note: create varBase before use
+      // {eid = '#daterangepicker', date1 = 'table.filter.date1', date2 = 'table.filter.date2', time = false,minmoment=$moment(),format='YYYY-MM-DD',cb:function, ranges:{}}
+      $(params.eid || '#daterangepicker').daterangepicker({
+        //alwaysShowCalendars: true,
+        startDate: moment().startOf('day'),
+        endDate: moment().endOf('day'),
+        ranges: params.ranges ||
+          ((params.ranges === 'left') ?
+            {
+              'Today': [moment().startOf('day'), moment().endOf('day')],
+              'This Week': [moment().startOf('week'), moment().endOf('week')],
+              'This Month': [moment().startOf('month'), moment().endOf('month')],
+              'This Year': [moment().startOf('year'), moment().endOf('year')],
+            } :
+            ((params.ranges === 'right') ?
+              {
+                'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                'Last Week': [moment().subtract(1, 'weeks').startOf('week'), moment().subtract(1, 'weeks').endOf('week')],
+                'Last Month': [moment().subtract(1, 'months').startOf('month'), moment().subtract(1, 'months').endOf('month')],
+                'Last Year': [moment().subtract(1, 'years').startOf('year'), moment().subtract(1, 'years').endOf('year')],
+              } :
+              {
+                'Today': [moment().startOf('day'), moment().endOf('day')],
+                'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+                'Last 30 Days': [moment().subtract(29, 'days').startOf('day'), moment().endOf('day')],
+                'This Month': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month').startOf('day'), moment().subtract(1, 'month').endOf('month').endOf('day')]
+              })),
+        minDate: params.minmoment || moment().subtract(2, 'years'),
+        locale: { format: params.format || (params.time ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD') },
+        linkedCalendars: false,
+        timePicker: params.time || false,
+        opens: 'center',
+        autoUpdateInput: false,
+      }, (d1, d2, label) => {
+        // $(params.eid || '#daterangepicker').val(d1.format('L') + ' + ' + d2.format('L'))
+        this.set(params.date1, d1.format(params.format || (params.time ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD')))
+        this.set(params.date2, d2.format(params.format || (params.time ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD')))
+        if (params.cb) params.cb(d1, d2, label)
+      })
+        .attr('size', 23)
+    },
+    datepickerGlobal: function (params = {}) {
+      //note: create varBase before use
+      // {eid = '#datepicker', date1 = 'table.filter.date1', time = false,minmoment=$moment(),format='YYYY-MM-DD',cb:function}
+      $(params.eid || '#datepicker').daterangepicker({
+        singleDatePicker: true,
+        timePicker: params.time || false,
+        minDate: params.minmoment || moment().subtract(2, 'years'),
+        opens: 'center',
+        locale: { format: params.format || (params.time ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD') },
+        autoUpdateInput: false,
+      }, (d1, d2, label) => {
+        this.set(params.date1, d1.format(params.format || (params.time ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD')))
+        if (params.cb) params.cb(d1)
+      }).attr('size', 23)
+    },
 
     // waitForSocket: function (callback, failed = false) {
     //   if (this.store.echoStatus)
@@ -109,7 +142,7 @@ export let aMixins = {
     // },
     //webapi
 
-    // <loading-toastr> invalidateInputs $root.postPath
+    // $root.$refs.app.$refs.lt:<loading-toastr> invalidateInputs $root.postPath
     post: function (path, a, b, c, d) {  //foreach object closure boolean string
       if (this.$root.$refs.app) if (this.$root.$refs.app.$refs.lt) this.tc(() => this.$root.$refs.app.$refs.lt.show())
       let last_button = null
@@ -125,7 +158,7 @@ export let aMixins = {
           else if (typeof item === 'object') obj = item
           else if (typeof item === 'boolean') notify = item
         })
-        axios.post('/' + this.$root.postPath + '/' + path, obj).then(r => {
+        axios.post((this.$root.postPath ? ('/' + this.$root.postPath) : '') + '/' + path, obj).then(r => {
           if (this.$root.$refs.app) if (this.$root.$refs.app.$refs.lt) this.$root.$refs.app.$refs.lt.hide()
           if (r.status === 200)
             if (r.data.status) {
@@ -143,7 +176,7 @@ export let aMixins = {
           last_button && setTimeout(() => last_button.disabled = false, 1000)
           resolve(r)
         }).catch((r) => {
-          if (this.$root.$refs.app) if (this.$root.$refs.app.$refs.lt) this.$root.$refs.app.$refs.lt.hide()
+          if (this.$root.$refs.app) if (this.$root.$refs.app.$refs.lt) this.tc(() => this.$root.$refs.app.$refs.lt.hide())
           if (notify)
             toastr.error(r.message || 'fail')
 

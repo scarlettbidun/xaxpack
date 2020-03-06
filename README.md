@@ -12,6 +12,13 @@ npm install xaxpack --save
 ```bash
 npm update xaxpack
 ```
+## Update Code
+
+```bash
+// git commit and push 
+npm version patch
+npm publish
+```
 
 ## Usage
 Can be use like this:
@@ -44,8 +51,9 @@ con:                    //console.log
 isEmpty:                //
 // trans:               //
 urlSegment:             //
-delayed:                //delay
-// daterangepickerSet:  //
+delayed:                //delay it
+daterangepickerGlobal:  //
+datepickerGlobal:       //
 // waitForSocket:       //
 post:                   //api post
 scrollToBot:            //scroll
