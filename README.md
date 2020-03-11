@@ -32,6 +32,8 @@ import { aMixins, printMsg } from 'xaxpack'
 
 Vue.mixin(aMixins)
 printMsg()
+
+import { loadingToastr } from 'xaxpack'
 ```
 in Vue, you may want to write this.
  ```js

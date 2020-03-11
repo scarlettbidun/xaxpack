@@ -145,6 +145,7 @@ export let aMixins = {
 
     // <loading-toastr> invalidateInputs $root.postPath
     post: function (path, a, b, c, d) {  //foreach object closure boolean string
+      path = path.replace('/' + this.$root.postPath + '/', '')
       if (!this.store.posting || this.store.posting.indexOf(path) === -1) this.set('store.posting', [...(this.store.posting ? this.store.posting : []), path])
       // if (this.$root.$refs.app) if (this.$root.$refs.app.$refs.lt) this.tc(() => this.$root.$refs.app.$refs.lt.show())
       let last_button = null
@@ -152,7 +153,6 @@ export let aMixins = {
         last_button = event.target
         last_button.disabled = true
       }
-      path = path.replace('/' + this.$root.postPath + '/', '')
       return new Promise((resolve, reject) => {
         let func = () => {}, obj = {}, notify = false;
         [a, b, c].forEach(item => {
@@ -186,6 +186,8 @@ export let aMixins = {
 
           last_button && setTimeout(() => last_button.disabled = false, 1000)
           reject(r)
+        }).then((r) => {
+          if (this.store.posting && this.store.posting.indexOf(path) !== -1) this.set('store.posting', this.store.posting.filter(k => k !== path))
         })
       })
     },
