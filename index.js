@@ -37,10 +37,12 @@ export let aMixins = {
           this.$set(eval(lastPath), k, value)
       })
     },
-    selfromdataf: function (data, k, v) {
+    selfromdataf: function (data, k, v, prepend = [{}]) {
+      if (prepend === true)
+        prepend = [{ text: '', value: null }]
       if (data && typeof data === 'object') {
-        data = Object.values(data)
-        return data.map((x, key) => ({ text: x[k], value: x[v] }))
+        data = Object.values(data).map((x, key) => ({ text: x[k], value: x[v] }))
+        return [...prepend, ...data]
       }
     },
     objSearch: function (obj, key, val, def = undefined) {
